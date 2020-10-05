@@ -1,0 +1,28 @@
+---
+title: "Ensayo Clinico"
+author:
+date:
+output: 
+  bookdown::html_document2:
+    fig.caption: yes
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, warning = FALSE, error = FALSE, message = FALSE)
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(bookdown)
+library(ggplot2)
+library(kableExtra)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+read_csv("AV.csv")
+```
+
+
+
+
+
