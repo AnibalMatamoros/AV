@@ -1,25 +1,29 @@
 ---
-title: "Ensayo Clinico"
-author:
-date:
+title: "Presentación R"
+author: "Anibal"
+date: "6/10/2020"
 output: 
-  bookdown::html_document2:
-    fig.caption: yes
+  ioslides_presentation:
+    widescreen: true
+    incremental: true
+
 ---
 
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE)
-library(tidyverse)
-library(dplyr)
-library(knitr)
-library(bookdown)
-library(ggplot2)
-library(kableExtra)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
+```{r}
+
+suppressMessages(library(tidyverse))
+suppressMessages(library(dplyr))
+suppressMessages(library(knitr))
+suppressMessages(library(bookdown))
+suppressMessages(library(kableExtra))
 
 
+
+```
 
 ```{r D3, echo=FALSE, message=FALSE, warning=FALSE}
 AV<- read_csv("AV.csv")
@@ -40,16 +44,40 @@ D3<- AV %>% group_by(Grupo) %>%
 ```
 
 
-# Introduccón
-El engrosamiento de la macula es una consecunecia degenerativa de la región con mayor agudeza de la retina. Se ha reportado que pacientes con diabetes desarrollan un engrosamiento de esta zona producto de la microangiopatia que se produce en los vasos retinianos. 
-Para una revisión más detallada de las patologias oculares recomendalomos la **lectura del libro** [Vaughan & Asbury's General Ophthalmology, 19e](http://accessmedicine.mhmedical.com.pucdechile.idm.oclc.org/content.aspx?bookid=2186&sectionid=165517020#1144467589)
+## Introduccón
+El engrosamiento de la macula es una consecuencia degenerativa de la región con mayor agudeza de la retina. Se ha reportado que pacientes con diabetes desarrollan un engrosamiento de esta zona producto de la microangiopatía que se produce en los vasos retinianos. 
+Para una revisión más detallada de las patologías oculares recomendaremos la **lectura del libro** [Vaughan & Asbury's General Ophthalmology, 19e](http://accessmedicine.mhmedical.com.pucdechile.idm.oclc.org/content.aspx?bookid=2186&sectionid=165517020#1144467589)
 
 
-# Objetivo
+## Problema:  La Retina
 
 
-El objetivo de este ensayo clinico fue probar evaluar el efecto de dos tratamiento sobre el engrosamiento de la macula.  Durante 4 años se reclutaron 54 pacientes de los cuales 
-`r AV %>% dplyr:: filter(Sexo=="Mujer") %>% nrow()` fueron mujeres y `r AV %>% dplyr:: filter(Sexo=="Mujer") %>% nrow()` fueron hombres. Fueron aleatorizados para recibir el tratamiento (tx) A o B y se realizo un seguimiento durante 10 meses para evaluar el efecto del tratamiento sobre el grosor de la macula. 
+```{r}
+knitr::include_graphics("F1.png")
+```
+
+## Problema:  Engrosamiento de la Macula
+
+```{r}
+knitr::include_graphics("F2.png")
+```
+
+## Problema: Como le evaluamos
+
+```{r}
+knitr::include_graphics("F3.png")
+```
+
+## Objetivo
+
+
+El objetivo de este ensayo clínico fue probar evaluar el efecto de dos tratamientos sobre el engrosamiento de la macula.  Durante 4 años se reclutaron 54 pacientes de los cuales 
+`r AV %>% dplyr:: filter(Sexo=="Mujer") %>% nrow()` fueron mujeres y `r AV %>% dplyr:: filter(Sexo=="Mujer") %>% nrow()` fueron hombres. Fueron aleatorizados para recibir el tratamiento (tx) A o B y se realizó un seguimiento durante 10 meses para evaluar el efecto del tratamiento sobre el grosor de la macula. 
+
+## Diferencia de grosor antes y después del tratamiento.{.smaller}
+
+Se realizo una comparación entre el grosor de la macula antes y después de cada tratamiento. Para cada una de las 9 regiones de la macula de cada participante. Fue realizado se calculó la media y SD. Sin embargo, no se aplicó test de Mc Neymar para evaluar si los resultados encontrados son estadísticamente significativos. Ver tabla \@ref(tab:J4).
+
 
 
 ```{r S3, echo=FALSE, message=FALSE, warning=FALSE}
@@ -117,8 +145,6 @@ J3<- full_join(D4,S4)
 
 ```
 
-# Diferencia de grosor antes y despues del tratamiento.
-Se realizo una comparación entre el grosor de la macula antes y después de cada tratamiento. Para cada una de las 9 regiones de la macula de cada participantes. Fue realizado se calculo la media y SD. Sin embargo, no se aplico test de Mc Neymar para evaluar si los resultados encontrados son estadisticamente significativos. Ver tabla \@ref(tab:J4). 
 
 ```{r J4, echo=FALSE, message=FALSE, warning=FALSE, fig.cap=J4}
 
@@ -128,11 +154,13 @@ knitr::kable(J4, digits = 2, caption = "Diferencia entre en grosor de la Macula 
     full_width = F, col.names =c('Grupo',' Región', 'Media Pre tx', 'SD', 'Media Post Tx', 'SD'), align = "cccc") %>% 
   kable_styling(bootstrap_options = c("striped", 
     "hover", "condensed"), full_width = F)%>% 
-    scroll_box(width = "500px", height = "300px")
+    scroll_box(width = "500px", height = "250px")
 ```
 
-# Diferencia entre tratamientos
-Para verificar cuál tratamiento fue mas efectivo en la disminución del grosor de macula. Se contruyo una tabla para presentar las diferencia del grosor de la macula posterior al uso de tratamiento A y B. No se realizo test. de T student para verificar asociacón. Ver Tabla \@ref(tab:D5).  
+
+## Diferencia entre tratamientos
+
+Para verificar cuál tratamiento fue más efectivo en la disminución del grosor de macula. Se construyó una tabla para presentar las diferencias del grosor de la macula posterior al uso de tratamiento A y B. No se realizó test. de T student para verificar asociación. Ver Tabla \@ref(tab:D5).
 
 ```{r D5, echo=FALSE, message=FALSE,fig.cap=D5, warning=FALSE}
 AV<- read_csv("AV.csv")
@@ -159,9 +187,9 @@ knitr::kable(D5, digits = 2, caption = "Diferencia entre en grosor de la macula 
 
 ```
 
-# Efecto del tratamiento sobre la grosor total de la macula
+## Efecto del tratamiento sobre la grosor total de la macula
 
-Se encontró que ambos tratamiento tuvieron un efecto sobre el grosor de la macula ver figura \@ref(fig:EfectoT)
+Se encontró que ambos tratamiento tuvieron un efecto sobre el grosor de la macula.
 
 
 ```{r A1, echo=FALSE, message=FALSE, warning=FALSE}
@@ -197,7 +225,6 @@ A2<- AV %>% group_by(Grupo) %>%
 
 ```
 
-
 ```{r A3, echo=FALSE, message=FALSE, warning=FALSE}
 AV<- read_csv("AV.csv")
 A3<- full_join (A1, A2)%>% 
@@ -205,6 +232,7 @@ A3<- full_join (A1, A2)%>%
 ```
   
 ```{r EfectoT, fig.cap="Efecto del tratamiento sobre la macula"}
+
 ggplot(A3, aes(x=Grupo, y=Media, fill=Resultado ))+
   geom_boxplot()+
   geom_jitter(aes(color = Resultado))+
@@ -214,14 +242,15 @@ ylab ("Grosor de la Macula")+
 ```
 
 
+## Gráfico imagen
 
+```{r}
+knitr::include_graphics("F4.png")
+```
 
+## Resultado por Area. pos tx
 
-
-
-# Resultado por Area. pos tx
-
-Para saber si el efecto del tratamiento era diferente según el area, se realizo una comparación por cada area de la macula. Ver figura \@ref(fig:EfectoR)
+Para saber si el efecto del tratamiento era diferente según el área, se realizó una comparación por cada área de la macula. 
 
 ```{r C2, echo=FALSE, message=FALSE, warning=FALSE}
 C2<- AV%>% 
@@ -237,8 +266,13 @@ ggplot(C2, aes(x=Regiones, y=Grosor, fill=Grupo ))+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
+## Gráfico imagen 2
 
-# Graficos fallido
+```{r}
+knitr::include_graphics("F5.png")
+```
+
+## Graficos fallido 1
 
 ```{r, fig.cap= "Comparación antes y despues del Tx"}
 ggplot(A3, aes(x= Resultado, y= Media, col=Region, group=Region)) +
@@ -249,11 +283,18 @@ ggplot(A3, aes(x= Resultado, y= Media, col=Region, group=Region)) +
 xlab("Resultado")
 ```
 
+## Graficos fallido 1  
+```{r}
+knitr::include_graphics("F7.png")
+```
 
+## Graficos fallido 2
 ```{r}
 C<- AV%>% 
   pivot_longer(starts_with("P"), names_to = "Regiones", values_to = "Grosor")
 ```
+
+
 
 ```{r, fig.cap= "Intento de comparar antes y despues por Tx por area"}
 ggplot(C, aes(x= fct_relevel(Regiones, "Pre1" ,"Pos1","Pre2" ,"Pos2","Pre3" ,"Pos4", 
@@ -265,3 +306,9 @@ ggplot(C, aes(x= fct_relevel(Regiones, "Pre1" ,"Pos1","Pre2" ,"Pos2","Pre3" ,"Po
 
 ```
 
+## Graficos fallido 2
+```{r}
+knitr::include_graphics("F6.png")
+```
+
+# Dudas?
