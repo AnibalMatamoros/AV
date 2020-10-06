@@ -9,7 +9,7 @@ output:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = F, warning = FALSE, error = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE)
 library(tidyverse)
 library(dplyr)
 library(knitr)
@@ -18,11 +18,142 @@ library(ggplot2)
 library(kableExtra)
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-read_csv("AV.csv")
+Para una revisión más detallada de la Anatomia de Ojo recomendalomos la **lectura del libro** [Vaughan & Asbury's General Ophthalmology, 19e](http://accessmedicine.mhmedical.com.pucdechile.idm.oclc.org/content.aspx?bookid=2186&sectionid=165517020#1144467589)
+
+
+
+
+```{r D3, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+
+D3<- AV %>% group_by(Grupo) %>%
+  summarize (R1 = mean(Pre1), 
+            R2 = mean(Pre2), 
+            R3 = mean(Pre3), 
+            R4 = mean(Pre4), 
+            R5 = mean(Pre5), 
+            R6 = mean(Pre6), 
+            R7 = mean(Pre7), 
+            R8 = mean(Pre8), 
+            R9 = mean(Pre9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "Media")
+
+
 ```
 
 
+```{r S3, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+S3<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = sd(Pre1),  
+            R2 = sd(Pre2), 
+            R3 = sd(Pre3),
+            R4 = sd(Pre4), 
+            R5 = sd(Pre5),
+            R6 = sd(Pre6),
+            R7 = sd(Pre7), 
+            R8 = sd(Pre8), 
+            R9 = sd(Pre9))%>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "SDpre")
+```
+
+```{r S4, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+S4<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = sd(Pos1),
+            R2 = sd(Pos2),
+            R3 = sd(Pos3),
+            R4 = sd(Pos4), 
+            R5 = sd(Pos5), 
+            R6 = sd(Pos6),  
+            R7 = sd(Pos7), 
+            R8 = sd(Pos8), 
+            R9 = sd(Pos9))%>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "SDpos")
+
+```
+
+
+
+
+```{r D4, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+D4<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = mean(Pos1), 
+            R2 = mean(Pos2),  
+            R3 = mean(Pos3), 
+            R4 = mean(Pos4), 
+            R5 = mean(Pos5), 
+            R6 = mean(Pos6),
+            R7 = mean(Pos7), 
+            R8 = mean(Pos8), 
+            R9 = mean(Pos9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "Med")
+
+
+```
+
+
+```{r J2, echo=FALSE, message=FALSE, warning=FALSE}
+
+J2<- full_join(D3,S3)
+
+```
+
+
+```{r J3, echo=FALSE, message=FALSE, warning=FALSE}
+
+J3<- full_join(D4,S4)
+
+```
+
+# Diferencia de grosor antes y despues del tratamiento.
+Se realizo una comparación entre el grosor de la macula antes y después de cada tratamiento. Para cada una de las 9 regiones de la macula de los 52 participantes se calculo la media y SD. Sin embargo, no se aplico test de Mc Neymar para evaluar si los resultados encontrados son estadisticamente significativos. 
+
+```{r J4, echo=FALSE, message=FALSE, warning=FALSE, fig.cap=J4}
+
+J4<- full_join(J2,J3)
+
+knitr::kable(J4, digits = 2, caption = "Diferencia entre en grosor de la Macula Pre y Post Tx", 
+    full_width = F, col.names =c('Grupo',' Región', 'Media Pre tx', 'SD', 'Media Post Tx', 'SD'), align = "cccc") %>% 
+  kable_styling(bootstrap_options = c("striped", 
+    "hover", "condensed"), full_width = F)%>% 
+    scroll_box(width = "500px", height = "300px")
+```
+
+# Diferencia entre tratamientos
+Para verificar cuál tratamiento fue mas efectivo en la disminución del grosor de macula. Se contruyo una tabla para presentar las diferencia del grosor de la macula posterior al uso de tratamiento A y B. No se realizo test. de T student para verificar asociacón.  
+
+```{r D5, echo=FALSE, message=FALSE,fig.cap=D5, warning=FALSE}
+AV<- read_csv("AV.csv")
+D5<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = mean(Pos1), 
+            R2 = mean(Pos2),  
+            R3 = mean(Pos3), 
+            R4 = mean(Pos4), 
+            R5 = mean(Pos5), 
+            R6 = mean(Pos6),
+            R7 = mean(Pos7), 
+            R8 = mean(Pos8), 
+            R9 = mean(Pos9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "Med")%>%
+  pivot_wider(names_from = Grupo, values_from=Med)
+
+
+
+knitr::kable(D5, digits = 2, caption = "Diferencia entre en grosor de la macula entre tratamientos", 
+    full_width = F, col.names =c('Region',' Media Tx A', 'Media Tx B'), align = "cccc") %>% 
+  kable_styling(bootstrap_options = c("striped", 
+    "hover", "condensed"), full_width = F)%>% 
+    scroll_box(width = "400px", height = "300px")
+
+```
+
+
+
+
+
+```
 
 
 
