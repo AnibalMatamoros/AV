@@ -151,9 +151,56 @@ knitr::kable(D5, digits = 2, caption = "Diferencia entre en grosor de la macula 
 
 
 
+```{r A1, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+A1<- AV %>% group_by(Grupo) %>%
+  summarize (R1 = mean(Pre1), 
+             R2 = mean(Pre2), 
+             R3 = mean(Pre3), 
+             R4 = mean(Pre4), 
+             R5 = mean(Pre5), 
+             R6 = mean(Pre6), 
+             R7 = mean(Pre7), 
+             R8 = mean(Pre8), 
+             R9 = mean(Pre9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "1Antes")
+```
 
+```{r A2, echo=FALSE, message=FALSE, warning=FALSE}
+
+AV<- read_csv("AV.csv")
+
+A2<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = mean(Pos1), 
+            R2 = mean(Pos2),  
+            R3 = mean(Pos3), 
+            R4 = mean(Pos4), 
+            R5 = mean(Pos5), 
+            R6 = mean(Pos6),
+            R7 = mean(Pos7), 
+            R8 = mean(Pos8), 
+            R9 = mean(Pos9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "1Depues")
 
 ```
 
+
+```{r A3, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+A3<- full_join (A1, A2)%>% 
+  pivot_longer(starts_with("1"), names_to = "Resultado", values_to = "Media")
+```
+  
+
+
+
+```{r ,A3 echo=FALSE, message=FALSE,fig.cap=A3, warning=FALSE}
+ggplot(A3, aes(x= Resultado, y= Media, col=Region, group=Region)) +
+  geom_point(aes(shape=Grupo), size=3)+
+  geom_line(show.legend = F)+
+  theme_classic()+
+  ylab ("Grosor de la Macula")+
+xlab("Resultado")
+```
 
 
