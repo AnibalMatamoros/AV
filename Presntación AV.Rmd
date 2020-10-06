@@ -76,7 +76,7 @@ El objetivo de este ensayo clínico fue probar evaluar el efecto de dos tratamie
 
 ## Diferencia de grosor antes y después del tratamiento.{.smaller}
 
-Se realizo una comparación entre el grosor de la macula antes y después de cada tratamiento. Para cada una de las 9 regiones de la macula de cada participante. Fue realizado se calculó la media y SD. Sin embargo, no se aplicó test de Mc Neymar para evaluar si los resultados encontrados son estadísticamente significativos. Ver tabla \@ref(tab:J4).
+Se realizo una comparación entre el grosor de la macula antes y después de cada tratamiento. Para cada una de las 9 regiones de la macula de cada participante. Fue realizado se calculó la media y SD. Sin embargo, no se aplicó test de Mc Neymar para evaluar si los resultados encontrados son estadísticamente significativos.
 
 
 
@@ -160,7 +160,7 @@ knitr::kable(J4, digits = 2, caption = "Diferencia entre en grosor de la Macula 
 
 ## Diferencia entre tratamientos
 
-Para verificar cuál tratamiento fue más efectivo en la disminución del grosor de macula. Se construyó una tabla para presentar las diferencias del grosor de la macula posterior al uso de tratamiento A y B. No se realizó test. de T student para verificar asociación. Ver Tabla \@ref(tab:D5).
+Para verificar cuál tratamiento fue más efectivo en la disminución del grosor de macula. Se construyó una tabla para presentar las diferencias del grosor de la macula posterior al uso de tratamiento A y B. No se realizó test. de T student para verificar asociación.
 
 ```{r D5, echo=FALSE, message=FALSE,fig.cap=D5, warning=FALSE}
 AV<- read_csv("AV.csv")
