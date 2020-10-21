@@ -1,7 +1,7 @@
 ---
 title: "Ensayo Clinico: Comparación de dos farmacos para el tratamiento de la degeneración macular"
 author: " Jose Anibal Matamoros"
-date: "21/10/2020"
+date: 
 output:
   bookdown::pdf_document2:
     fig.caption: yes
@@ -245,7 +245,8 @@ boxplot( Pos9 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 9")
 
 ## Evaluación de los tratamientos sobre la agudeza visual
 
-Para evaluar si los tratamientos tenían efecto sobre la agudeza visual se realizó una regresión logística ajustada a las principales variables relacionadas con la AMD. No se encontraron en el efecto que del grupo de tratamiento, ni el grosor promedio de la cornea cuando estas variables fueron ajustadas al sexo y edad. Ver tabla  \@ref(tab:Tab1).  
+Para evaluar si los tratamientos tenían efecto sobre la agudeza visual se realizó una regresión logística ajustada a las principales variables relacionadas con la AMD. Se calculo el efecto del tipo de tratamiento sobre la agudeza visual, ajusatando el modelo a las variable sexo, edad y grosor final de macula (total) y no se obtuvo el p.value significativo para el valor de Beta. También se calculo el efecto del grosor de la macula sobre sobre agudeza visual ajustado a la variable sexo y edad y no demostro obtivo un valor significativo para el modelo. Ver tabla  \@ref(tab:Tab1).  
+  
 
 
 ```{r Tab1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap=Tab1}
