@@ -1,6 +1,6 @@
 ---
 title: "Ensayo Clinico: Comparación de dos farmacos para el tratamiento de la degeneración macular"
-author: " Jose Anibal Matamoros"
+author: " Jose A. Matamoros"
 date: 
 output:
   bookdown::pdf_document2:
