@@ -191,8 +191,7 @@ A2<- AV %>% group_by(Grupo) %>%
             R7 = mean(Pos7), 
             R8 = mean(Pos8), 
             R9 = mean(Pos9)) %>%
-  pivot_longer(starts_with("R"), names_to = "Region", values_to = "1Depues")%>%
-  full_join (A1, A2)
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "1Depues")
 
 A3<- full_join (A1, A2)%>% 
   pivot_longer(starts_with("1"), names_to = "Resultado", values_to = "Media")
@@ -209,11 +208,74 @@ xlab("Resultado")
 
 ggplot(A3, aes(x=Grupo, y=Media, fill=Resultado ))+
   geom_boxplot()+
+  geom_jitter(aes(color = Resultado))+
+  scale_fill_manual(values = c('#d8b365','#5ab4ac'))+
 ylab ("Grosor de la Macula")+
   xlab("Grupo de tratamiento")
+
+
+
   
 
- 
-  
+ # Vamos hacer un pivot para toda la tabla a ver si
+#sale un grafico buen
+#usaremos P para unir
 
 
+C<- AV%>% 
+  pivot_longer(starts_with("P"), names_to = "Regiones", values_to = "Grosor")
+
+ggplot(C, aes(x=Regiones, y=Grosor, fill=Grupo ))+
+  geom_boxplot()+
+  coord_flip()+
+  ylab ("Grosor de la Macula")+
+  xlab("Grupo de tratamiento")
+
+ggplot(C, aes(x= fct_relevel(Regiones, "Pre1" ,"Pos1","Pre2" ,"Pos2","Pre3" ,"Pos4", 
+"Pre5","Pos5", "Pre6" ,"Pos6", "Pre7" ,"Pos7", "Pre8" ,"Pos8", "Pre9" ,"Pos9" ), y=Grosor, fill=Grupo ))+
+  geom_boxplot()+
+  ylab ("Grosor de la Macula")+
+  xlab("Grupo de tratamiento")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+
+
+#Vamos hacer el grafico solo para los pos, este es el grafico que quiero
+C2<- AV%>% 
+  pivot_longer(starts_with("Pos"), names_to = "Regiones", values_to = "Grosor")
+
+ggplot(C2, aes(x=Regiones, y=Grosor, fill=Grupo ))+
+  geom_boxplot()+
+  ylab ("Grosor de la Macula")+
+  xlab("Grupo de tratamiento")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+par(mfrow=c(2,2))
+
+ggplot(AV, aes(x= fct_relevel("Pre1" ,"Pos1"), y=Grosor, fill=Grupo ))+
+  geom_boxplot()+
+  ylab ("Grosor de la Macula")+
+  xlab("Grupo de tratamiento")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+####################Probleamas aqui#######
+##################333##
+###########
+
+par(mfrow=c(2,1))
+
+
+par(mfrow=c(1,2))
+
+dev.off() # Desactivamos todas las ventanas gráficas o dispositivos
+layout(matrix(c(1:4), nrow=2, byrow=FALSE))
+
+layout.show(4)
+
+ggplot(AV, aes(x = Grupo, y = Pre2)) + 
+  geom_boxplot(aes(fill = Grupo)) + theme_bw()
+
+ggplot(AV, aes(x = Grupo, y = Pre1)) + 
+  geom_boxplot(aes(fill = Grupo)) + theme_bw()

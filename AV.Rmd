@@ -265,3 +265,18 @@ ggplot(C, aes(x= fct_relevel(Regiones, "Pre1" ,"Pos1","Pre2" ,"Pos2","Pre3" ,"Po
 
 ```
 
+
+```{r}
+attach(AV)
+par(mfrow=c(2,5))
+boxplot( Pos1 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 1")
+boxplot( Pos2 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 2")
+boxplot( Pos3 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 3")
+boxplot( Pos4 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 4")
+boxplot( Pos5 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 5")
+boxplot( Pos6 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 6" )
+boxplot( Pos7 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 7")
+boxplot( Pos8 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 8")
+boxplot( Pos9 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 9")
+```
+

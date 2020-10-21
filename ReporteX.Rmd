@@ -1,0 +1,270 @@
+---
+title: "Ensayo Clinico: Comparación de dos farmacos para el tratamiento de la degeneración macular"
+author: " Jose Anibal Matamoros"
+date: "21/10/2020"
+output:
+  bookdown::pdf_document2:
+    fig.caption: yes
+    toc: no
+bibliography: Biblio.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(bookdown)
+library(ggplot2)
+library(kableExtra)
+library(Epi)
+library(epiR)
+library(broom)
+AV<- read_csv("AV.csv")
+attach(AV)
+
+as.factor(Grupo)
+as.factor(Sexo)
+as.factor(Agudeza)
+total<- (Pos1+Pos2+Pos3+Pos4+Pos5+Pos6+Pos7+Pos8+Pos9)/9
+AV<-data.frame(AV,total)
+reg1<- glm(Agudeza~ Grupo+Sexo+Edad+total, family=binomial(link="logit")) 
+summary(reg1)
+tidy(reg1)
+
+```
+
+
+```{r D3, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+
+D3<- AV %>% group_by(Grupo) %>%
+  summarize (R1 = mean(Pre1), 
+            R2 = mean(Pre2), 
+            R3 = mean(Pre3), 
+            R4 = mean(Pre4), 
+            R5 = mean(Pre5), 
+            R6 = mean(Pre6), 
+            R7 = mean(Pre7), 
+            R8 = mean(Pre8), 
+            R9 = mean(Pre9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "Media")
+
+
+```
+
+
+
+
+
+
+```{r S3, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+S3<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = sd(Pre1),  
+            R2 = sd(Pre2), 
+            R3 = sd(Pre3),
+            R4 = sd(Pre4), 
+            R5 = sd(Pre5),
+            R6 = sd(Pre6),
+            R7 = sd(Pre7), 
+            R8 = sd(Pre8), 
+            R9 = sd(Pre9))%>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "SDpre")
+```
+
+```{r S4, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+S4<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = sd(Pos1),
+            R2 = sd(Pos2),
+            R3 = sd(Pos3),
+            R4 = sd(Pos4), 
+            R5 = sd(Pos5), 
+            R6 = sd(Pos6),  
+            R7 = sd(Pos7), 
+            R8 = sd(Pos8), 
+            R9 = sd(Pos9))%>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "SDpos")
+
+```
+
+
+
+
+```{r D4, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+D4<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = mean(Pos1), 
+            R2 = mean(Pos2),  
+            R3 = mean(Pos3), 
+            R4 = mean(Pos4), 
+            R5 = mean(Pos5), 
+            R6 = mean(Pos6),
+            R7 = mean(Pos7), 
+            R8 = mean(Pos8), 
+            R9 = mean(Pos9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "Med")
+
+
+```
+
+
+```{r J2, echo=FALSE, message=FALSE, warning=FALSE}
+
+J2<- full_join(D3,S3)
+
+```
+
+
+```{r J3, echo=FALSE, message=FALSE, warning=FALSE}
+
+J3<- full_join(D4,S4)
+
+```
+
+```{r A1, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+A1<- AV %>% group_by(Grupo) %>%
+  summarize (R1 = mean(Pre1), 
+             R2 = mean(Pre2), 
+             R3 = mean(Pre3), 
+             R4 = mean(Pre4), 
+             R5 = mean(Pre5), 
+             R6 = mean(Pre6), 
+             R7 = mean(Pre7), 
+             R8 = mean(Pre8), 
+             R9 = mean(Pre9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "1Antes")
+```
+
+```{r A2, echo=FALSE, message=FALSE, warning=FALSE}
+
+AV<- read_csv("AV.csv")
+
+A2<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = mean(Pos1), 
+            R2 = mean(Pos2),  
+            R3 = mean(Pos3), 
+            R4 = mean(Pos4), 
+            R5 = mean(Pos5), 
+            R6 = mean(Pos6),
+            R7 = mean(Pos7), 
+            R8 = mean(Pos8), 
+            R9 = mean(Pos9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "1Depues")
+
+```
+
+```{r A3, echo=FALSE, message=FALSE, warning=FALSE}
+AV<- read_csv("AV.csv")
+A3<- full_join (A1, A2)%>% 
+  pivot_longer(starts_with("1"), names_to = "Resultado", values_to = "Media")
+```
+# Introducción
+
+La degeneración macular relacionada con la edad (AMD) es un trastorno degenerativo progresivo, crónico y común de la mácula que afecta a las personas mayores y presenta pérdida de la visión central como resultado de anomalías en el fotorreceptor / epitelio pigmentario de la retina / membrana de Bruch / complejo coroideo que a menudo da como resultado una atrofia geográfica y / o neovascularización [@rosenfeld2006ranibizumab]. A nivel mundial, la DMAE ocupa el tercer lugar como causa de ceguera después de las cataratas y el glaucoma. La mayoría de las personas afectadas viven en países desarrollados [@gheorghe2015age].
+
+ La fisiopatología y los factores de riesgo de AMD son complejos y los síntomas se manifiestan en múltiples formas relacionadas pero distintas. La capacidad de desarrollar tratamientos efectivos para la DMAE depende de un conocimiento profundo de la fisiopatología subyacente, los factores de riesgo y las vías moleculares impulsoras, así como de la capacidad de desarrollar nuevas terapias que controlen la progresión de la enfermeda [@van2014mechanisms]. En este contexto, el objetivo de esta investigación fue evaluar el efecto de dos tratamiento (A, B) para el tratamiento de la degeneración macular en en Brasil. 
+ 
+# Metodología 
+
+Se realizo un ensayo clínico randomizado doble ciego controlado en pacientes de mayores a 40 años que presentaron AMD. Los participantes fueron reclutados durante 4 años en el Hospital de las  Clinicas-UFPA, se formaron grupos estratificados por edad, sexo y tiempo de evolución de la enfermedad. En el estudio se registraron 54 particiantes que cumplian con los criterios de inclusión,  de los cuales `r AV %>% dplyr:: filter(Sexo=="Mujer") %>% nrow()` fueron mujeres y `r AV %>% dplyr:: filter(Sexo=="Mujer") %>% nrow()` fueron hombres. El tratamiento consistió en una inyección intravítrea cada 4 semanas con en tratamiento A o el Tratamiento B, en pacientes en que la terapia convencional había fallado. El seguimiento fue realizado durante 1 año con control mensual con tomografía ocular y evaluación de la agudeza visual. En este primer informe se reportan los resultados en al tercer mes de tratamiento. El estudio cuenta con aprobación por comité ético. 
+
+# Resultados
+
+## Evaluación del efecto de cada tratamiento
+
+Para evaluar el efecto de cada tratamiento sobre el grosor de la macula se utilizaron las medidas de las nueve regiones que componen la macula y se comparó en grosor de cada región antes y después de cada intervención . Interesantemente se observo una disminución en el grosor en todas las regiones para ambos tratamientos Ver tabla \@ref(tab:J4). Posteriormente se estimo el efecto de cada tratamiento en toda la región macular y se observó una diferencia una reducción global del grosor macular ver figura \@ref(fig:EfectoT). En base a estos resultado se puede afirmar que el tratamiento intravitreo con los farmacos A y B disminyen el grosor en todas la regiones de la macula. 
+
+
+
+
+```{r J4, echo=FALSE, message=FALSE, warning=FALSE, fig.cap=J4}
+
+J4<- full_join(J2,J3)
+
+
+kbl(J4, caption = "Efecto deltratamiento por región", booktabs = T) %>%
+kable_styling(latex_options = c("striped", "hold_position"))
+
+```
+
+
+```{r EfectoT, fig.cap="Efecto del tratamiento sobre la macula" , echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(A3, aes(x=Grupo, y=Media, fill=Resultado ))+
+  geom_boxplot()+
+  geom_jitter(aes(color = Resultado))+
+  scale_fill_manual(values = c('#d8b365','#5ab4ac'))+
+ylab ("Grosor de la Macula")+
+  xlab("Grupo de tratamiento")
+```
+
+## Comparación de los tratamientos
+
+Para comparar cuál de los dos tratamientos fue más efectivo se evaluó el efecto de cada tratamiento sobre el grosor de las 9 regiones de la macula tres meses después de la primera intervención Ver Tabla \@ref(tab:D5). Interesantemente se observó que los participantes del grupo B presentaron mejores resultados en la mayoría de las regiones en comparación con los participantes del grupo A.  Ver figura \@ref(fig:Efec). 
+
+```{r D5, echo=FALSE, message=FALSE,fig.cap=D5, warning=FALSE}
+AV<- read_csv("AV.csv")
+D5<- AV %>% group_by(Grupo) %>%
+  summarize(R1 = mean(Pos1), 
+            R2 = mean(Pos2),  
+            R3 = mean(Pos3), 
+            R4 = mean(Pos4), 
+            R5 = mean(Pos5), 
+            R6 = mean(Pos6),
+            R7 = mean(Pos7), 
+            R8 = mean(Pos8), 
+            R9 = mean(Pos9)) %>%
+  pivot_longer(starts_with("R"), names_to = "Region", values_to = "Med")%>%
+  pivot_wider(names_from = Grupo, values_from=Med)
+
+
+
+kbl(D5, caption = "Comparación de Tratamiento A vs B", booktabs = T) %>%
+kable_styling(latex_options = c("striped", "hold_position"))
+
+```
+
+```{r Efec, fig.cap="Comparación de tratamientos", echo=FALSE, message=FALSE, warning=FALSE}
+attach(AV)
+par(mfrow=c(2,5))
+boxplot( Pos1 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 1")
+boxplot( Pos2 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 2")
+boxplot( Pos3 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 3")
+boxplot( Pos4 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 4")
+boxplot( Pos5 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 5")
+boxplot( Pos6 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 6" )
+boxplot( Pos7 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 7")
+boxplot( Pos8 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 8")
+boxplot( Pos9 ~ Grupo, boxfill = "lightblue",xlab = "Grupo", ylab = "Región 9")
+```
+
+
+## Evaluación de los tratamientos sobre la agudeza visual
+
+Para evaluar si los tratamientos tenían efecto sobre la agudeza visual se realizó una regresión logística ajustada a las principales variables relacionadas con la AMD. No se encontraron en el efecto que del grupo de tratamiento, ni el grosor promedio de la cornea cuando estas variables fueron ajustadas al sexo y edad. Ver tabla  \@ref(tab:Tab1).  
+
+
+```{r Tab1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap=Tab1}
+
+Tab1<-tidy(reg1)
+
+kbl(Tab1, caption = "Regresión lógistica ajustada a todas las variables", booktabs = T) %>%
+kable_styling(latex_options = c("striped", "hold_position"))
+
+
+```
+
+# Conclusiones 
+Se demostró una disminución en el grosor de la macula en ambos grupos de tratamiento, interesantemente el grupo tratado con el fármaco B presento un mejor resulto, sin embargo no se demostró una mejoría en la agudeza visual de los participantes. Finalmente podemos asumir que el tratamiento A y B revierten el efecto de engrosamiento de la macula pero no mejoran los resultados sobre la agudeza visual, es posible que estos resultados sobre la agudeza visual se secundario a un daño permanente del nervio óptico o que las mediciones realizadas son demasiado prematuras para generar un efecto. 
+
+
+
+# Agradecimientos
+
+Profesores Derek Corcoran y Giorgia Graells por su coloboración en la revisión del código. 
+
+# Referencia
